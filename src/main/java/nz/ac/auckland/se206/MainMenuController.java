@@ -13,5 +13,6 @@ public class MainMenuController {
   private void switchToCanvas(ActionEvent event) {
     Button btnClicked = (Button) event.getSource();
     Scene scene = btnClicked.getScene();
+    scene.setRoot(SceneManager.getUI(SceneManager.AppUI.CANVAS));
   }
 }

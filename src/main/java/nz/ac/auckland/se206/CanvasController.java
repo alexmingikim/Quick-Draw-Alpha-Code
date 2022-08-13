@@ -21,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javax.imageio.ImageIO;
 import nz.ac.auckland.se206.ml.DoodlePrediction;
-import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.words.CategorySelector;
 import nz.ac.auckland.se206.words.CategorySelector.Difficulty;
 
@@ -83,8 +82,8 @@ public class CanvasController {
     // ALPHA CODE
     wordLabel.setText(randomWord); // label displays random word
     currentWord = randomWord;
-    TextToSpeech textToSpeech = new TextToSpeech();
-    textToSpeech.speak(randomWord); // speak the word which user should draw
+    // TextToSpeech textToSpeech = new TextToSpeech();
+    // textToSpeech.speak(randomWord); // speak the word which user should draw
   }
 
   /** This method is called when the "Clear" button is pressed. */
