@@ -28,6 +28,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import nz.ac.auckland.se206.ml.DoodlePrediction;
+import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.words.CategorySelector;
 import nz.ac.auckland.se206.words.CategorySelector.Difficulty;
 
@@ -54,6 +55,8 @@ public class CanvasController {
   @FXML private Button btnReady;
 
   @FXML private Label lblPredictions;
+
+  @FXML private Button btnSpeech;
 
   private GraphicsContext graphic;
 
@@ -104,9 +107,6 @@ public class CanvasController {
     String randomWord = categorySelector.getRandomCategory(Difficulty.E);
     lblWordToDraw.setText("Please draw: " + randomWord); // label displays random word
     currentWord = randomWord;
-
-    // TextToSpeech textToSpeech = new TextToSpeech();
-    // textToSpeech.speak(randomWord); // speak the word which user should draw
   }
 
   /** This method is called when the "Ready to Draw" button is pressed. */
@@ -197,10 +197,20 @@ public class CanvasController {
   // This method is called when game is finished;
   private void finishGame() {}
 
+  // Start new game
+  private void startGame() {}
+
   /** This method is called when the "Clear" button is pressed. */
   @FXML
   private void onClear() {
     graphic.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+  }
+
+  // This method is called when the "Text-To-Speech" button is pressed.
+  @FXML
+  private void onSpeech() {
+    TextToSpeech textToSpeech = new TextToSpeech();
+    textToSpeech.speak(currentWord); // speak the word which user should draw
   }
 
   /**

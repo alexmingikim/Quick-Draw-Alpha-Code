@@ -22,19 +22,20 @@
       </HBox>
       <HBox prefHeight="84.0" prefWidth="760.0">
          <children>
-            <Label fx:id="lblWordToDraw" alignment="CENTER" prefHeight="78.0" prefWidth="359.0" textAlignment="CENTER">
+            <Label fx:id="lblWordToDraw" alignment="CENTER" prefHeight="42.0" prefWidth="217.0" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="78.0" prefWidth="144.0" text="        Time Remaining:" textAlignment="RIGHT">
+            <Button fx:id="btnSpeech" mnemonicParsing="false" onAction="#onSpeech" prefHeight="41.0" prefWidth="117.0" text="Text-To-Speech" />
+            <Label alignment="CENTER_RIGHT" prefHeight="78.0" prefWidth="144.0" text="    Time Remaining:" textAlignment="RIGHT">
                <font>
-                  <Font size="14.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
-            <Label fx:id="lblTimeRemaining" prefHeight="79.0" prefWidth="299.0" text="Time Remaining">
+            <Label fx:id="lblTimeRemaining" alignment="CENTER" contentDisplay="RIGHT" prefHeight="42.0" prefWidth="270.0" text="Time Remaining">
                <font>
-                  <Font size="14.0" />
+                  <Font size="17.0" />
                </font>
             </Label>
          </children>
