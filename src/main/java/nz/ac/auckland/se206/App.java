@@ -29,10 +29,10 @@ public class App extends Application {
   }
 
   /**
-   * This method is invoked when the application starts. It loads and shows the "Canvas" scene.
+   * This method is invoked when the application starts. It loads and shows the "main menu" scene.
    *
    * @param stage The primary stage of the application.
-   * @throws IOException If "src/main/resources/fxml/canvas.fxml" is not found.
+   * @throws IOException If "src/main/resources/fxml/mainmenu.fxml" is not found.
    */
   @Override
   public void start(final Stage stage) throws IOException {
