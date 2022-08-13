@@ -52,9 +52,9 @@
       </HBox>
     <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="400.0">
       <children>
-        <Button fx:id="btnReady" mnemonicParsing="false" onAction="#onReady" text="Ready to Draw" />
-            <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" />
+        <Button fx:id="btnReady" defaultButton="true" mnemonicParsing="false" onAction="#onReady" text="Ready to Draw" />
+            <Button fx:id="btnDraw" disable="true" mnemonicParsing="false" onAction="#onDraw" text="Draw" />
+            <Button fx:id="btnErase" mnemonicParsing="false" onAction="#onErase" text="Erase" />
         <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClear" text="Clear" />
       </children>
     </HBox>

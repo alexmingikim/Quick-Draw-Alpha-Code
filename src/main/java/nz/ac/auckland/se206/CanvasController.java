@@ -58,6 +58,10 @@ public class CanvasController {
 
   @FXML private Button btnSpeech;
 
+  @FXML private Button btnDraw;
+
+  @FXML private Button btnErase;
+
   private GraphicsContext graphic;
 
   private DoodlePrediction model;
@@ -68,8 +72,8 @@ public class CanvasController {
 
   private static final int NUM_TOP_PREDICTIONS_DISPLAY = 10; // no. of top predictions to display
 
-  private static final int NUM_TOP_PREDICTIONS_WIN = 3; // no. within which correct category must be
-  // guessed for user to win
+  private static final int NUM_TOP_PREDICTIONS_WIN = 3; // no. (in position) within which correct
+  // category must be guessed for user to win
 
   private Timeline timeline;
 
@@ -86,7 +90,21 @@ public class CanvasController {
    */
   public void initialize() throws ModelException, IOException, CsvException, URISyntaxException {
     graphic = canvas.getGraphicsContext2D();
+    model = new DoodlePrediction();
+    startGame();
 
+    // *** CHANGE LOCATION OF THIS METHOD: SHOULD BE INVOKED WHEN GAME STARTS ***
+    CategorySelector categorySelector = new CategorySelector();
+    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
+    lblWordToDraw.setText("Please draw: " + randomWord); // label displays random word
+    currentWord = randomWord;
+  }
+
+  // Draw
+  @FXML
+  private void onDraw() {
+    btnDraw.setDisable(true);
+    btnErase.setDisable(false);
     canvas.setOnMouseDragged(
         e -> {
           // Brush size (you can change this, it should not be too small or too large).
@@ -99,14 +117,25 @@ public class CanvasController {
           graphic.setFill(Color.BLACK);
           graphic.fillOval(x, y, size, size);
         });
+  }
 
-    model = new DoodlePrediction();
+  // Erase
+  @FXML
+  private void onErase() {
+    btnDraw.setDisable(false);
+    btnErase.setDisable(true);
+    canvas.setOnMouseDragged(
+        e -> {
+          // Brush size (you can change this, it should not be too small or too large).
+          final double size = 10.0;
 
-    // *** CHANGE LOCATION OF THIS METHOD: SHOULD BE INVOKED WHEN GAME STARTS ***
-    CategorySelector categorySelector = new CategorySelector();
-    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
-    lblWordToDraw.setText("Please draw: " + randomWord); // label displays random word
-    currentWord = randomWord;
+          final double x = e.getX() - size / 2;
+          final double y = e.getY() - size / 2;
+
+          // This is the colour of the brush.
+          graphic.setFill(Color.WHITE);
+          graphic.fillOval(x, y, size, size);
+        });
   }
 
   /** This method is called when the "Ready to Draw" button is pressed. */
@@ -198,7 +227,9 @@ public class CanvasController {
   private void finishGame() {}
 
   // Start new game
-  private void startGame() {}
+  private void startGame() {
+    onDraw();
+  }
 
   /** This method is called when the "Clear" button is pressed. */
   @FXML
