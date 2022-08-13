@@ -41,7 +41,7 @@ public class App extends Application {
     SceneManager.addUI(SceneManager.AppUI.MAIN_MENU, loadFxml("mainmenu"));
 
     // changed size of app (default: 640x480); load main menu first
-    final Scene scene = new Scene(SceneManager.getUI(SceneManager.AppUI.MAIN_MENU), 600, 400);
+    final Scene scene = new Scene(SceneManager.getUI(SceneManager.AppUI.MAIN_MENU), 800, 540);
     stage.setTitle("Quick, Draw!");
     stage.setScene(scene);
     stage.show();

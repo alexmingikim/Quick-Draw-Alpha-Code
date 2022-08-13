@@ -1,8 +1,7 @@
 package nz.ac.auckland.se206;
 
-import static nz.ac.auckland.se206.ml.DoodlePrediction.printPredictions;
-
 import ai.djl.ModelException;
+import ai.djl.modality.Classifications;
 import ai.djl.modality.Classifications.Classification;
 import ai.djl.translate.TranslateException;
 import com.opencsv.exceptions.CsvException;
@@ -12,13 +11,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import nz.ac.auckland.se206.ml.DoodlePrediction;
 import nz.ac.auckland.se206.words.CategorySelector;
@@ -40,13 +47,27 @@ public class CanvasController {
 
   @FXML private Canvas canvas;
 
-  @FXML private Label wordLabel;
+  @FXML private Label lblWordToDraw;
+
+  @FXML private Label lblTimeRemaining;
+
+  @FXML private Button btnReady;
+
+  @FXML private Label lblPredictions;
 
   private GraphicsContext graphic;
 
   private DoodlePrediction model;
 
   private String currentWord; // game should know which word the user is trying to draw
+
+  private static final int TIME_TO_DRAW = 60;
+
+  private static final int NUM_TOP_PREDICTIONS = 10;
+
+  private Timeline timeline;
+
+  private final IntegerProperty timeSeconds = new SimpleIntegerProperty(TIME_TO_DRAW);
 
   /**
    * JavaFX calls this method once the GUI elements are loaded. In our case we create a listener for
@@ -77,13 +98,69 @@ public class CanvasController {
 
     // *** CHANGE LOCATION OF THIS METHOD: SHOULD BE INVOKED WHEN GAME STARTS ***
     CategorySelector categorySelector = new CategorySelector();
-    String randomWord = categorySelector.getRandomCategory(Difficulty.E); // get random word of
-    // difficulty easy for
-    // ALPHA CODE
-    wordLabel.setText(randomWord); // label displays random word
+    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
+    lblWordToDraw.setText("Please draw: " + randomWord); // label displays random word
     currentWord = randomWord;
+
     // TextToSpeech textToSpeech = new TextToSpeech();
     // textToSpeech.speak(randomWord); // speak the word which user should draw
+  }
+
+  /** This method is called when the "Ready to Draw" button is pressed. */
+  @FXML
+  private void onReady() {
+    lblTimeRemaining.textProperty().bind(timeSeconds.asString());
+    canvas.setDisable(false); // enable canvas
+    btnReady.setDisable(true);
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimeAndPredictions()));
+    timeline.setCycleCount(TIME_TO_DRAW);
+    timeSeconds.set(TIME_TO_DRAW);
+    timeline.play();
+  }
+
+  private void updateTimeAndPredictions() {
+    int seconds = timeSeconds.get();
+    timeSeconds.set(seconds - 1);
+    BufferedImage image = getCurrentSnapshot();
+
+    Task<Void> backgroundTask =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            String string = printPredictions(image);
+            Platform.runLater(
+                () -> {
+                  lblPredictions.setText(string);
+                });
+
+            return null;
+          }
+        };
+    Thread backgroundThread = new Thread(backgroundTask);
+    backgroundThread.start();
+  }
+
+  /**
+   * Method that prints the ML model predictions as a string.
+   *
+   * @param image
+   * @return top 10 predictions as a string
+   * @throws TranslateException
+   */
+  private String printPredictions(BufferedImage image) throws TranslateException {
+    List<Classifications.Classification> predictions =
+        model.getPredictions(image, NUM_TOP_PREDICTIONS);
+    StringBuilder sb = new StringBuilder();
+    int i = 1;
+    sb.append("Top 10 predictions:\n");
+    for (Classifications.Classification classification : predictions) {
+      sb.append(i)
+          .append(": ")
+          .append(classification.getClassName())
+          .append(System.lineSeparator());
+      i++;
+    }
+    return sb.toString();
   }
 
   /** This method is called when the "Clear" button is pressed. */
@@ -107,7 +184,8 @@ public class CanvasController {
     final long start = System.currentTimeMillis();
 
     List<Classification> predictionResults = model.getPredictions(getCurrentSnapshot(), 3);
-    printPredictions(predictionResults);
+    // printPredictions(predictionResults);
+
     System.out.println(isWin(predictionResults) ? "WIN" : "LOSS");
 
     System.out.println("prediction performed in " + (System.currentTimeMillis() - start) + " ms");

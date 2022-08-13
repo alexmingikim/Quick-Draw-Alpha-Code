@@ -9,26 +9,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.CanvasController">
+<VBox alignment="CENTER" prefHeight="540.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.CanvasController">
   <children>
-    <Label alignment="CENTER" layoutX="124.0" layoutY="14.0" prefHeight="23.0" prefWidth="355.0" text="Quick, Draw! SE206  Edition" textAlignment="CENTER">
-      <font>
-        <Font size="18.0" />
-      </font>
-    </Label>
-      <Label fx:id="wordLabel" alignment="CENTER" prefHeight="23.0" prefWidth="355.0" textAlignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-    <Canvas fx:id="canvas" height="243.0" layoutX="101.0" layoutY="65.0" width="400.0">
-      <cursor>
-        <Cursor fx:constant="HAND" />
-      </cursor>
-    </Canvas>
+      <HBox prefHeight="99.0" prefWidth="760.0">
+         <children>
+          <Label alignment="CENTER" prefHeight="99.0" prefWidth="760.0" text="Quick, Draw! SE206  Edition" textAlignment="CENTER">
+            <font>
+              <Font size="18.0" />
+            </font>
+          </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="84.0" prefWidth="760.0">
+         <children>
+            <Label fx:id="lblWordToDraw" alignment="CENTER" prefHeight="78.0" prefWidth="359.0" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label prefHeight="78.0" prefWidth="144.0" text="        Time Remaining:" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTimeRemaining" prefHeight="79.0" prefWidth="299.0" text="Time Remaining">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+          <Canvas fx:id="canvas" disable="true" height="316.0" width="567.0">
+            <cursor>
+              <Cursor fx:constant="HAND" />
+            </cursor>
+          </Canvas>
+            <Label fx:id="lblPredictions" alignment="TOP_LEFT" prefHeight="319.0" prefWidth="193.0" />
+         </children>
+      </HBox>
     <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="400.0">
       <children>
-        <Button fx:id="predictButton" mnemonicParsing="false" onAction="#onPredict" text="Predict" />
+        <Button fx:id="btnReady" mnemonicParsing="false" onAction="#onReady" text="Ready to Draw" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
         <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClear" text="Clear" />
       </children>
     </HBox>
