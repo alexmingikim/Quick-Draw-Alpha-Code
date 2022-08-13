@@ -26,8 +26,7 @@ public class CategorySelector {
   private Map<Difficulty, List<String>> difficulty2Categories;
 
   public CategorySelector() throws IOException, CsvException, URISyntaxException { // constructor to
-    // instantiate
-    // map
+    // instantiate map
     // initialise a map which will store a list of strings (words) according to difficulty
     difficulty2Categories = new HashMap<>();
     for (Difficulty difficulty : Difficulty.values()) { // "for each difficulty", create a list of
@@ -37,16 +36,11 @@ public class CategorySelector {
     // input the data
     for (String[] line : getLines()) { // for EACH line read
       // add elements into list we have already created
-      difficulty2Categories.get(Difficulty.valueOf(line[1])).add(line[0]); // LEFT TO RIGHT: first
-      // get list associated
-      // with difficulty
-      // then add words of that
-      // difficulty;
-      // difficulty data is
-      // stored as the 1st
-      // element, and words are
-      // stored as 0th element
-      // in the file read;
+      difficulty2Categories.get(Difficulty.valueOf(line[1])).add(line[0]);
+      // LEFT TO RIGHT: first GET list associated with difficulty
+      // then ADD words of that difficulty;
+      // difficulty data is stored as the 1st element, and words are
+      // stored as 0th element in the file read;
       // convert string to enum
     }
   }

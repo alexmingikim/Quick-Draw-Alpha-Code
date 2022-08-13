@@ -36,8 +36,9 @@ public class App extends Application {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    final Scene scene = new Scene(loadFxml("canvas"), 640, 480);
-
+    // changed size of app (default: 640x480)
+    final Scene scene = new Scene(loadFxml("mainmenu"), 600, 400); // load main menu first
+    stage.setTitle("Quick, Draw!");
     stage.setScene(scene);
     stage.show();
   }
