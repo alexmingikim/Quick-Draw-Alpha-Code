@@ -63,7 +63,10 @@ public class CanvasController {
 
   private static final int TIME_TO_DRAW = 60;
 
-  private static final int NUM_TOP_PREDICTIONS = 10;
+  private static final int NUM_TOP_PREDICTIONS_DISPLAY = 10; // no. of top predictions to display
+
+  private static final int NUM_TOP_PREDICTIONS_WIN = 3; // no. within which correct category must be
+  // guessed for user to win
 
   private Timeline timeline;
 
@@ -121,7 +124,7 @@ public class CanvasController {
   private void updateTimeAndPredictions() {
     int seconds = timeSeconds.get();
     timeSeconds.set(seconds - 1);
-    BufferedImage image = getCurrentSnapshot();
+    BufferedImage image = getCurrentSnapshot(); // application thread must capture the snapshot
 
     Task<Void> backgroundTask =
         new Task<Void>() {
@@ -133,6 +136,24 @@ public class CanvasController {
                   lblPredictions.setText(string);
                 });
 
+            // Win condition
+            if (isWin(model.getPredictions(image, NUM_TOP_PREDICTIONS_WIN)) == true) {
+              timeline.stop();
+              Platform.runLater(
+                  () -> {
+                    lblPredictions.setText("You Won!");
+                  });
+              finishGame();
+            }
+
+            // Lose condition
+            if (timeSeconds.get() == 0) {
+              Platform.runLater(
+                  () -> {
+                    lblPredictions.setText("You Lost :(");
+                  });
+              finishGame();
+            }
             return null;
           }
         };
@@ -141,7 +162,7 @@ public class CanvasController {
   }
 
   /**
-   * Method that prints the ML model predictions as a string.
+   * Method that prints the top 10 DL model predictions as a string.
    *
    * @param image
    * @return top 10 predictions as a string
@@ -149,7 +170,7 @@ public class CanvasController {
    */
   private String printPredictions(BufferedImage image) throws TranslateException {
     List<Classifications.Classification> predictions =
-        model.getPredictions(image, NUM_TOP_PREDICTIONS);
+        model.getPredictions(image, NUM_TOP_PREDICTIONS_DISPLAY);
     StringBuilder sb = new StringBuilder();
     int i = 1;
     sb.append("Top 10 predictions:\n");
@@ -162,6 +183,19 @@ public class CanvasController {
     }
     return sb.toString();
   }
+
+  // User wins if correct category is in top 3 predictions
+  private boolean isWin(List<Classification> classifications) {
+    for (Classification classification : classifications) {
+      if (classification.getClassName().equals(currentWord)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // This method is called when game is finished;
+  private void finishGame() {}
 
   /** This method is called when the "Clear" button is pressed. */
   @FXML
@@ -189,15 +223,6 @@ public class CanvasController {
     System.out.println(isWin(predictionResults) ? "WIN" : "LOSS");
 
     System.out.println("prediction performed in " + (System.currentTimeMillis() - start) + " ms");
-  }
-
-  private boolean isWin(List<Classification> classifications) {
-    for (Classification classification : classifications) {
-      if (classification.getClassName().equals(currentWord)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
