@@ -224,11 +224,19 @@ public class CanvasController {
   }
 
   // This method is called when game is finished;
-  private void finishGame() {}
+  private void finishGame() {
+    canvas.setDisable(true);
+  }
 
   // Start new game
-  private void startGame() {
+  private void startGame() throws IOException, CsvException, URISyntaxException {
+    // give user ability to draw
     onDraw();
+    // randomly select word of difficulty E
+    CategorySelector categorySelector = new CategorySelector();
+    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
+    lblWordToDraw.setText("Please draw: " + randomWord);
+    currentWord = randomWord;
   }
 
   /** This method is called when the "Clear" button is pressed. */
