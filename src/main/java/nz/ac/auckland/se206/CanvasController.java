@@ -33,7 +33,6 @@ import javax.imageio.ImageIO;
 import nz.ac.auckland.se206.ml.DoodlePrediction;
 import nz.ac.auckland.se206.speech.TextToSpeech;
 import nz.ac.auckland.se206.words.CategorySelector;
-import nz.ac.auckland.se206.words.CategorySelector.Difficulty;
 
 /**
  * This is the controller of the canvas. You are free to modify this class and the corresponding
@@ -64,6 +63,8 @@ public class CanvasController {
   @FXML private Button btnDraw;
 
   @FXML private Button btnErase;
+
+  @FXML private Button btnClear;
 
   @FXML private Button btnSaveDrawing;
 
@@ -99,11 +100,14 @@ public class CanvasController {
     graphic = canvas.getGraphicsContext2D();
     model = new DoodlePrediction();
     startGame();
+  }
 
-    // *** CHANGE LOCATION OF THIS METHOD: SHOULD BE INVOKED WHEN GAME STARTS ***
+  // This method generates word of specified difficulty.
+  private void generateRandomWord(CategorySelector.Difficulty difficulty)
+      throws IOException, CsvException, URISyntaxException {
     CategorySelector categorySelector = new CategorySelector();
-    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
-    lblWordToDraw.setText("Please draw: " + randomWord); // label displays random word
+    String randomWord = categorySelector.getRandomCategory(difficulty);
+    lblWordToDraw.setText("Please draw: " + randomWord);
     currentWord = randomWord;
   }
 
@@ -148,9 +152,12 @@ public class CanvasController {
   /** This method is called when the "Ready to Draw" button is pressed. */
   @FXML
   private void onReady() {
-    lblTimeRemaining.textProperty().bind(timeSeconds.asString());
+    onDraw();
     canvas.setDisable(false); // enable canvas
     btnReady.setDisable(true);
+    btnClear.setDisable(false);
+
+    lblTimeRemaining.textProperty().bind(timeSeconds.asString());
     timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimeAndPredictions()));
     timeline.setCycleCount(TIME_TO_DRAW);
     timeSeconds.set(TIME_TO_DRAW);
@@ -233,6 +240,11 @@ public class CanvasController {
   // This method is called when game is finished;
   private void finishGame() {
     canvas.setDisable(true);
+
+    // enable/disable buttons
+    btnDraw.setDisable(true);
+    btnErase.setDisable(true);
+    btnClear.setDisable(true);
     btnSaveDrawing.setDisable(false);
     btnNewGame.setDisable(false);
   }
@@ -240,17 +252,15 @@ public class CanvasController {
   // Start new game
   private void startGame() throws IOException, CsvException, URISyntaxException {
     onClear();
-    // give user ability to draw
-    onDraw();
-    // randomly select word of difficulty E
-    CategorySelector categorySelector = new CategorySelector();
-    String randomWord = categorySelector.getRandomCategory(Difficulty.E);
-    lblWordToDraw.setText("Please draw: " + randomWord);
-    currentWord = randomWord;
+    generateRandomWord(CategorySelector.Difficulty.E); // generate random word of E difficulty
 
-    // enable and disable buttons
+    // enable/disable buttons
+    btnDraw.setDisable(true);
+    btnErase.setDisable(true);
+    btnClear.setDisable(true);
     btnSaveDrawing.setDisable(true);
     btnNewGame.setDisable(true);
+    btnReady.setDisable(false);
   }
 
   /** This method is called when the "Clear" button is pressed. */
@@ -262,8 +272,18 @@ public class CanvasController {
   // This method is called when the "Text-To-Speech" button is pressed.
   @FXML
   private void onSpeech() {
-    TextToSpeech textToSpeech = new TextToSpeech();
-    textToSpeech.speak(currentWord); // speak the word which user should draw
+
+    Task<Void> backgroundTask1 =
+        new Task<Void>() {
+          @Override
+          protected Void call() throws Exception {
+            TextToSpeech textToSpeech = new TextToSpeech();
+            textToSpeech.speak(currentWord); // speak the word which user should draw
+            return null;
+          }
+        };
+    Thread backgroundThread1 = new Thread(backgroundTask1);
+    backgroundThread1.start();
   }
 
   // This method is called when the "Save Drawing" button is pressed.
@@ -280,7 +300,7 @@ public class CanvasController {
   @FXML
   private void onPlayNewGame() throws IOException, CsvException, URISyntaxException {
     startGame();
-    onReady();
+    btnReady.setDisable(false);
   }
 
   /**

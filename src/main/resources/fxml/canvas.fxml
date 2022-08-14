@@ -62,8 +62,8 @@
       <children>
         <Button fx:id="btnReady" defaultButton="true" mnemonicParsing="false" onAction="#onReady" text="Ready to Draw" />
             <Button fx:id="btnDraw" disable="true" mnemonicParsing="false" onAction="#onDraw" text="Draw" />
-            <Button fx:id="btnErase" mnemonicParsing="false" onAction="#onErase" text="Erase" />
-        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClear" text="Clear" />
+            <Button fx:id="btnErase" disable="true" mnemonicParsing="false" onAction="#onErase" text="Erase" />
+        <Button fx:id="btnClear" disable="true" mnemonicParsing="false" onAction="#onClear" text="Clear" />
             <Button fx:id="btnSaveDrawing" disable="true" mnemonicParsing="false" onAction="#onSaveDrawing" text="Save Drawing " />
             <Button fx:id="btnNewGame" disable="true" mnemonicParsing="false" onAction="#onPlayNewGame" text="New Game" />
       </children>
