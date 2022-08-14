@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,6 +26,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import nz.ac.auckland.se206.ml.DoodlePrediction;
@@ -61,6 +64,8 @@ public class CanvasController {
   @FXML private Button btnDraw;
 
   @FXML private Button btnErase;
+
+  @FXML private Button btnSaveDrawing;
 
   private GraphicsContext graphic;
 
@@ -226,6 +231,7 @@ public class CanvasController {
   // This method is called when game is finished;
   private void finishGame() {
     canvas.setDisable(true);
+    btnSaveDrawing.setDisable(false);
   }
 
   // Start new game
@@ -237,6 +243,9 @@ public class CanvasController {
     String randomWord = categorySelector.getRandomCategory(Difficulty.E);
     lblWordToDraw.setText("Please draw: " + randomWord);
     currentWord = randomWord;
+
+    // enable and disable buttons
+    btnSaveDrawing.setDisable(true);
   }
 
   /** This method is called when the "Clear" button is pressed. */
@@ -250,6 +259,16 @@ public class CanvasController {
   private void onSpeech() {
     TextToSpeech textToSpeech = new TextToSpeech();
     textToSpeech.speak(currentWord); // speak the word which user should draw
+  }
+
+  // This method is called when the "Save Drawing" button is pressed.
+  @FXML
+  private void onSaveDrawing() throws IOException {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save");
+    File file = saveCurrentSnapshotOnFile();
+    File file1 = fileChooser.showSaveDialog(new Stage());
+    Files.copy(file.toPath(), file1.toPath());
   }
 
   /**
