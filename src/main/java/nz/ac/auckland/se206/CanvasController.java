@@ -67,6 +67,8 @@ public class CanvasController {
 
   @FXML private Button btnSaveDrawing;
 
+  @FXML private Button btnNewGame;
+
   private GraphicsContext graphic;
 
   private DoodlePrediction model;
@@ -232,10 +234,12 @@ public class CanvasController {
   private void finishGame() {
     canvas.setDisable(true);
     btnSaveDrawing.setDisable(false);
+    btnNewGame.setDisable(false);
   }
 
   // Start new game
   private void startGame() throws IOException, CsvException, URISyntaxException {
+    onClear();
     // give user ability to draw
     onDraw();
     // randomly select word of difficulty E
@@ -246,6 +250,7 @@ public class CanvasController {
 
     // enable and disable buttons
     btnSaveDrawing.setDisable(true);
+    btnNewGame.setDisable(true);
   }
 
   /** This method is called when the "Clear" button is pressed. */
@@ -269,6 +274,13 @@ public class CanvasController {
     File file = saveCurrentSnapshotOnFile();
     File file1 = fileChooser.showSaveDialog(new Stage());
     Files.copy(file.toPath(), file1.toPath());
+  }
+
+  // This method is called when the "New Game" button is pressed.
+  @FXML
+  private void onPlayNewGame() throws IOException, CsvException, URISyntaxException {
+    startGame();
+    onReady();
   }
 
   /**

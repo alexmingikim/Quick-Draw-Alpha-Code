@@ -56,7 +56,8 @@
             <Button fx:id="btnDraw" disable="true" mnemonicParsing="false" onAction="#onDraw" text="Draw" />
             <Button fx:id="btnErase" mnemonicParsing="false" onAction="#onErase" text="Erase" />
         <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClear" text="Clear" />
-            <Button fx:id="btnSaveDrawing" mnemonicParsing="false" onAction="#onSaveDrawing" text="Save Drawing " />
+            <Button fx:id="btnSaveDrawing" disable="true" mnemonicParsing="false" onAction="#onSaveDrawing" text="Save Drawing " />
+            <Button fx:id="btnNewGame" disable="true" mnemonicParsing="false" onAction="#onPlayNewGame" text="New Game" />
       </children>
     </HBox>
 
