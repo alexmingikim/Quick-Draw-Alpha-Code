@@ -9,31 +9,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="540.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.CanvasController">
+<VBox alignment="CENTER" prefHeight="480.0" prefWidth="640.0" spacing="20.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.CanvasController">
   <children>
-      <HBox prefHeight="99.0" prefWidth="760.0">
+      <HBox prefHeight="52.0" prefWidth="600.0">
          <children>
-          <Label alignment="CENTER" prefHeight="99.0" prefWidth="760.0" text="Quick, Draw! SE206  Edition" textAlignment="CENTER">
+          <Label alignment="CENTER" prefHeight="59.0" prefWidth="600.0" text="Quick, Draw! SE206 Edition" textAlignment="CENTER">
             <font>
-              <Font size="18.0" />
+              <Font name="System Bold Italic" size="30.0" />
             </font>
           </Label>
          </children>
       </HBox>
-      <HBox prefHeight="84.0" prefWidth="760.0">
+      <HBox prefHeight="31.0" prefWidth="600.0">
          <children>
             <Label fx:id="lblWordToDraw" alignment="CENTER" prefHeight="42.0" prefWidth="217.0" textAlignment="CENTER">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <Button fx:id="btnSpeech" mnemonicParsing="false" onAction="#onSpeech" prefHeight="41.0" prefWidth="117.0" text="Text-To-Speech" />
-            <Label alignment="CENTER_RIGHT" prefHeight="78.0" prefWidth="144.0" text="    Time Remaining:" textAlignment="RIGHT">
+            <Button fx:id="btnSpeech" mnemonicParsing="false" onAction="#onSpeech" prefHeight="31.0" prefWidth="150.0" text="Text-To-Speech">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="177.0" text="    Time Remaining:" textAlignment="RIGHT">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label fx:id="lblTimeRemaining" alignment="CENTER" contentDisplay="RIGHT" prefHeight="42.0" prefWidth="270.0" text="Time Remaining">
+            <Label fx:id="lblTimeRemaining" alignment="CENTER" contentDisplay="RIGHT" prefHeight="29.0" prefWidth="169.0" text="60 ">
                <font>
                   <Font size="17.0" />
                </font>
@@ -42,12 +46,16 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-          <Canvas fx:id="canvas" disable="true" height="316.0" width="567.0">
+          <Canvas fx:id="canvas" disable="true" height="243.0" width="400.0">
             <cursor>
               <Cursor fx:constant="HAND" />
             </cursor>
           </Canvas>
-            <Label fx:id="lblPredictions" alignment="TOP_LEFT" prefHeight="319.0" prefWidth="193.0" />
+            <Label fx:id="lblPredictions" alignment="TOP_LEFT" prefHeight="243.0" prefWidth="203.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
     <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="400.0">

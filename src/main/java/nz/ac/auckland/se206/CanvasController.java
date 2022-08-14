@@ -213,7 +213,7 @@ public class CanvasController {
     for (Classifications.Classification classification : predictions) {
       sb.append(i)
           .append(": ")
-          .append(classification.getClassName())
+          .append(classification.getClassName().replaceAll("_", " "))
           .append(System.lineSeparator());
       i++;
     }
@@ -223,7 +223,7 @@ public class CanvasController {
   // User wins if correct category is in top 3 predictions
   private boolean isWin(List<Classification> classifications) {
     for (Classification classification : classifications) {
-      if (classification.getClassName().equals(currentWord)) {
+      if (classification.getClassName().replaceAll("_", " ").equals(currentWord)) {
         return true;
       }
     }
