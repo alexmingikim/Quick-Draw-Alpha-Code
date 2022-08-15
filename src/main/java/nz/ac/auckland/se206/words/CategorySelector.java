@@ -54,6 +54,7 @@ public class CategorySelector {
   }
 
   protected List<String[]> getLines() throws IOException, CsvException, URISyntaxException {
+    // read csv file
     File file = new File(CategorySelector.class.getResource("/category_difficulty.csv").toURI());
     try (FileReader fr = new FileReader(file, StandardCharsets.UTF_8);
         CSVReader reader = new CSVReader(fr)) {

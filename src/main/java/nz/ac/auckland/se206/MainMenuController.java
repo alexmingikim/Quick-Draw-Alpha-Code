@@ -17,6 +17,7 @@ public class MainMenuController {
       throws IOException, CsvException, URISyntaxException {
     Button btnClicked = (Button) event.getSource();
     Scene scene = btnClicked.getScene();
+    // change root node of scene
     scene.setRoot(SceneManager.getUi(SceneManager.AppUi.CANVAS));
   }
 }

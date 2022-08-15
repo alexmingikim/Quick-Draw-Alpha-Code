@@ -111,7 +111,6 @@ public class CanvasController {
     currentWord = randomWord;
   }
 
-  // Draw
   @FXML
   private void onDraw() {
     btnDraw.setDisable(true);
@@ -130,7 +129,6 @@ public class CanvasController {
         });
   }
 
-  // Erase
   @FXML
   private void onErase() {
     btnDraw.setDisable(false);
@@ -149,9 +147,10 @@ public class CanvasController {
         });
   }
 
-  /** This method is called when the "Ready to Draw" button is pressed. */
+  // This method is called when the "Ready to Draw" button is pressed.
   @FXML
   private void onReady() {
+    // give user ability to draw
     onDraw();
     canvas.setDisable(false);
     btnReady.setDisable(true);
@@ -168,7 +167,7 @@ public class CanvasController {
   // This method, every second, updates time remaining and top 10 predictions.
   private void updateTimeAndPredictions() {
     int seconds = timeSeconds.get();
-    timeSeconds.set(seconds - 1); // count down seconds
+    timeSeconds.set(seconds - 1); // count down in seconds
     BufferedImage image = getCurrentSnapshot(); // application thread must capture the snapshot
 
     // Task performed by background thread
@@ -239,6 +238,7 @@ public class CanvasController {
   // User wins if correct category is in top 3 predictions
   private boolean isWin(List<Classification> classifications) {
     for (Classification classification : classifications) {
+      // win if prediction matches word user must draw
       if (classification.getClassName().replaceAll("_", " ").equals(currentWord)) {
         return true;
       }
@@ -272,9 +272,10 @@ public class CanvasController {
     btnReady.setDisable(false);
   }
 
-  /** This method is called when the "Clear" button is pressed. */
+  // This method is called when the "Clear" button is pressed.
   @FXML
   private void onClear() {
+    // clear canvas
     graphic.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
   }
 
@@ -282,6 +283,7 @@ public class CanvasController {
   @FXML
   private void onProduceSpeech() {
 
+    // background thread produces speech
     Task<Void> backgroundTask1 =
         new Task<Void>() {
           @Override
