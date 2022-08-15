@@ -15,7 +15,8 @@ import java.util.Random;
 
 public class CategorySelector {
 
-  public enum Difficulty { // key
+  public enum Difficulty {
+    // difficulty of words either: EASY(E), MEDIUM(M), HARD(H)
     E,
     M,
     H
@@ -25,12 +26,12 @@ public class CategorySelector {
   // type of the key is: Difficulty; the value is a list of strings
   private Map<Difficulty, List<String>> difficulty2Categories;
 
-  public CategorySelector() throws IOException, CsvException, URISyntaxException { // constructor to
-    // instantiate map
+  public CategorySelector() throws IOException, CsvException, URISyntaxException {
+    // constructor to instantiate map
     // initialise a map which will store a list of strings (words) according to difficulty
     difficulty2Categories = new HashMap<>();
-    for (Difficulty difficulty : Difficulty.values()) { // "for each difficulty", create a list of
-      // strings
+    for (Difficulty difficulty : Difficulty.values()) {
+      // "for each difficulty", create a list of strings
       difficulty2Categories.put(difficulty, new ArrayList<>()); // at this stage, an empty list
     }
     // input the data

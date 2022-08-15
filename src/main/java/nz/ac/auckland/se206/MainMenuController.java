@@ -13,10 +13,10 @@ public class MainMenuController {
   @FXML private Button btnSwitchToCanvas;
 
   @FXML
-  private void switchToCanvas(ActionEvent event)
+  private void onSwitchToCanvas(ActionEvent event)
       throws IOException, CsvException, URISyntaxException {
     Button btnClicked = (Button) event.getSource();
     Scene scene = btnClicked.getScene();
-    scene.setRoot(SceneManager.getUI(SceneManager.AppUI.CANVAS));
+    scene.setRoot(SceneManager.getUi(SceneManager.AppUi.CANVAS));
   }
 }

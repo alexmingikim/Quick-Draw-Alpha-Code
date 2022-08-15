@@ -5,21 +5,21 @@ import javafx.scene.Parent;
 
 public class SceneManager {
 
-  public enum AppUI {
+  public enum AppUi {
     CANVAS,
     MAIN_MENU
   }
 
   // use a MAP to store and match UI with ONE root node each
-  private static HashMap<AppUI, Parent> sceneMap = new HashMap<AppUI, Parent>();
+  private static HashMap<AppUi, Parent> sceneMap = new HashMap<AppUi, Parent>();
 
   // associate a UI with its root node
-  public static void addUI(AppUI UIType, Parent parentNode) {
-    sceneMap.put(UIType, parentNode);
+  public static void addUi(AppUi uiType, Parent parentNode) {
+    sceneMap.put(uiType, parentNode);
   }
 
   // get root node for that UI
-  public static Parent getUI(AppUI UIType) {
-    return sceneMap.get(UIType);
+  public static Parent getUi(AppUi uiType) {
+    return sceneMap.get(uiType);
   }
 }

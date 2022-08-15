@@ -37,11 +37,11 @@ public class App extends Application {
   @Override
   public void start(final Stage stage) throws IOException {
     // load root nodes and store in a map; to be referenced later
-    SceneManager.addUI(SceneManager.AppUI.CANVAS, loadFxml("canvas"));
-    SceneManager.addUI(SceneManager.AppUI.MAIN_MENU, loadFxml("mainmenu"));
+    SceneManager.addUi(SceneManager.AppUi.CANVAS, loadFxml("canvas"));
+    SceneManager.addUi(SceneManager.AppUi.MAIN_MENU, loadFxml("mainmenu"));
 
     // changed size of app (default: 640x480); load main menu first
-    final Scene scene = new Scene(SceneManager.getUI(SceneManager.AppUI.MAIN_MENU), 640, 480);
+    final Scene scene = new Scene(SceneManager.getUi(SceneManager.AppUi.MAIN_MENU), 640, 480);
     stage.setTitle("Quick, Draw!");
     stage.setScene(scene);
     stage.show();

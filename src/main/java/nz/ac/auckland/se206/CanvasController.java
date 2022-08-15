@@ -48,6 +48,13 @@ import nz.ac.auckland.se206.words.CategorySelector;
  */
 public class CanvasController {
 
+  private static final int TIME_TO_DRAW = 60;
+
+  private static final int NUM_TOP_PREDICTIONS_DISPLAY = 10; // no. of top predictions to display
+
+  private static final int NUM_TOP_PREDICTIONS_WIN = 3; // position within which correct
+  // word must be guessed for user to win
+
   @FXML private Canvas canvas;
 
   @FXML private Label lblWordToDraw;
@@ -75,13 +82,6 @@ public class CanvasController {
   private DoodlePrediction model;
 
   private String currentWord; // game should know which word the user is trying to draw
-
-  private static final int TIME_TO_DRAW = 60;
-
-  private static final int NUM_TOP_PREDICTIONS_DISPLAY = 10; // no. of top predictions to display
-
-  private static final int NUM_TOP_PREDICTIONS_WIN = 3; // no. (in position) within which correct
-  // category must be guessed for user to win
 
   private Timeline timeline;
 
@@ -153,27 +153,32 @@ public class CanvasController {
   @FXML
   private void onReady() {
     onDraw();
-    canvas.setDisable(false); // enable canvas
+    canvas.setDisable(false);
     btnReady.setDisable(true);
     btnClear.setDisable(false);
 
-    lblTimeRemaining.textProperty().bind(timeSeconds.asString());
+    lblTimeRemaining.textProperty().bind(timeSeconds.asString()); // bind time remaining (displayed)
+    // to internal timing
     timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTimeAndPredictions()));
     timeline.setCycleCount(TIME_TO_DRAW);
     timeSeconds.set(TIME_TO_DRAW);
     timeline.play();
   }
 
+  // This method, every second, updates time remaining and top 10 predictions.
   private void updateTimeAndPredictions() {
     int seconds = timeSeconds.get();
-    timeSeconds.set(seconds - 1);
+    timeSeconds.set(seconds - 1); // count down seconds
     BufferedImage image = getCurrentSnapshot(); // application thread must capture the snapshot
 
+    // Task performed by background thread
     Task<Void> backgroundTask =
         new Task<Void>() {
           @Override
           protected Void call() throws Exception {
+            // background thread prints predictions
             String string = printPredictions(image);
+            // Application thread prints predictions to GUI
             Platform.runLater(
                 () -> {
                   lblPredictions.setText(string);
@@ -182,6 +187,7 @@ public class CanvasController {
             // Win condition
             if (isWin(model.getPredictions(image, NUM_TOP_PREDICTIONS_WIN)) == true) {
               timeline.stop();
+              // Application thread prints predictions to GUI
               Platform.runLater(
                   () -> {
                     lblPredictions.setText("You Won!");
@@ -207,13 +213,16 @@ public class CanvasController {
   /**
    * Method that prints the top 10 DL model predictions as a string.
    *
-   * @param image
+   * @param image snapshot of canvas
    * @return top 10 predictions as a string
    * @throws TranslateException
    */
   private String printPredictions(BufferedImage image) throws TranslateException {
+    // use DL model to get predictions based on current snapshot
     List<Classifications.Classification> predictions =
         model.getPredictions(image, NUM_TOP_PREDICTIONS_DISPLAY);
+
+    // print top 10 predictions as a single string
     StringBuilder sb = new StringBuilder();
     int i = 1;
     sb.append("Top 10 predictions:\n");
@@ -271,7 +280,7 @@ public class CanvasController {
 
   // This method is called when the "Text-To-Speech" button is pressed.
   @FXML
-  private void onSpeech() {
+  private void onProduceSpeech() {
 
     Task<Void> backgroundTask1 =
         new Task<Void>() {
@@ -304,9 +313,9 @@ public class CanvasController {
   }
 
   /**
-   * This method executes when the user clicks the "Predict" button. It gets the current drawing,
-   * queries the DL model and prints on the console the top 5 predictions of the DL model and the
-   * elapsed time of the prediction in milliseconds.
+   * METHOD NOT USED. This method executes when the user clicks the "Predict" button. It gets the
+   * current drawing, queries the DL model and prints on the console the top 5 predictions of the DL
+   * model and the elapsed time of the prediction in milliseconds.
    *
    * @throws TranslateException If there is an error in reading the input/output of the DL model.
    */
@@ -318,7 +327,6 @@ public class CanvasController {
     final long start = System.currentTimeMillis();
 
     List<Classification> predictionResults = model.getPredictions(getCurrentSnapshot(), 3);
-    // printPredictions(predictionResults);
 
     System.out.println(isWin(predictionResults) ? "WIN" : "LOSS");
 

@@ -27,7 +27,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <Button fx:id="btnSpeech" mnemonicParsing="false" onAction="#onSpeech" prefHeight="31.0" prefWidth="150.0" text="Text-To-Speech">
+            <Button fx:id="btnSpeech" mnemonicParsing="false" onAction="#onProduceSpeech" prefHeight="31.0" prefWidth="150.0" text="Text-To-Speech">
                <font>
                   <Font size="14.0" />
                </font>
